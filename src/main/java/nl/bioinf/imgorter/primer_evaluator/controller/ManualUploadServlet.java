@@ -2,6 +2,8 @@ package nl.bioinf.imgorter.primer_evaluator.controller;
 
 import nl.bioinf.imgorter.primer_evaluator.config.WebConfig;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,8 +27,14 @@ public class ManualUploadServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String primer_a = request.getParameter("primer_a");
-        String primer_b = request.getParameter("primer_b");
+
+        String primer_a_seq = "5'-" + request.getParameter("primer_a") + "-3'";
+        String primer_b_seq = "3'-" + request.getParameter("primer_b") + "-5'";
+        System.out.println(primer_a_seq);
+        System.out.println(primer_b_seq);
         Locale locale = request.getLocale();
+
+        WebContext ctx = new WebContext(request, response, request.getServletContext(), locale);
+
     }
 }

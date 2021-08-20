@@ -32,7 +32,6 @@ public class FileUploadServlet extends HttpServlet{
         Locale locale = request.getLocale();
         WebContext ctx = new WebContext(request, response, request.getServletContext(), locale);
         if (sequenceFile != null) {
-            final String evaluatorResult = "evaluator result";
             ctx.setVariable("sequenceFile", sequenceFile);
         }
     }
