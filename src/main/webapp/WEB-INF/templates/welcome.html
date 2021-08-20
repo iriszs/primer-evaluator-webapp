@@ -1,0 +1,33 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title th:text="#{title.msg}"> Offline primer evaluator </title>
+</head>
+<body>
+
+<p th:text="#{welcome.msg}">Welcome to the primer evaluator. The server is currently offline.</p>
+
+<p th:text="#{fileupload.msg}">Upload your file containing primers here</p>
+<form action="file_upload.do" method="GET" enctype="multipart/form-data">
+    <input type="file" name="sequence_file" accept="text", required>
+    <br>
+    <br>
+    <input type="submit" value="Evaluate" />
+</form>
+<p th:text="#{manually.msg}">Or enter your primers here:</p>
+
+<form action="manual_upload.do" method="GET">
+    <label for="primer_a"> Forward primer: 5-'</label>
+    <input type="text" id="primer_a" name="primer_a" minlength="18" maxlength="30" placeholder="ACTGACTGACTGACTGAT" title="Please enter a primer sequence only containing nucleotides and between 18-30 nucleotides long" required>
+    -3'
+    <br><br>
+    <label for="primer_b">Reverse primer (optional): 3'-</label>
+    <input type="text" id="primer_b" name="primer_b" minlenght="18" maxlength="30" placeholder="TAGTCAGTCAGTCAGTCA" title="Please enter a primer sequence only containing nucleotides and between 18-30 nucleotides long" >
+    -5'
+    <br><br>
+    <input type="submit" value="Evaluate" />
+</form>
+
+</body>
+</html>
