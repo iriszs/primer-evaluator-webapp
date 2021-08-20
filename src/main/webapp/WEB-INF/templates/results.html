@@ -1,10 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title th:text="#{title.msg}"> Offline result </title>
 </head>
 <body>
+
+<p th:text="#{primerA.msg}">Result from primer A: </p>
+<p th:text="#{nucleotides.msg}">Nucleotide content: </p>
+<p th:text="#{length.msg}">Sequence length: </p>
+<p th:text="#{GC.msg}">GC percentage: </p>
+<p th:text="#{melttemp.msg}">The melting temperature in Celsius: </p>
+<p th:text="#{homopolymer.msg}">The homopolymer length: </p>
+<p th:text="#{intramolecular.msg}">Intramolecular length: </p>
+<br>
+<br>
+<p th:text="#{primerB.msg}">Result from primer B: </p>
+<p th:text="#{nucleotides.msg}">Nucleotide content: </p>
+<p th:text="#{length.msg}">Sequence length: </p>
+<p th:text="#{GC.msg}">GC percentage: </p>
+<p th:text="#{melttemp.msg}">The melting temperature in Celsius: </p>
+<p th:text="#{homopolymer.msg}">The homopolymer length: </p>
+<p th:text="#{intramolecular.msg}">Intramolecular length: </p>
+<br>
+<br>
+<p th:text="#{intermolecular.msg}">Intermolecular length when using both Primer A and B: </p>
 
 </body>
 </html>
