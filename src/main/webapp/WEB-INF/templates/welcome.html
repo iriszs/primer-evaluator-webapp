@@ -5,9 +5,24 @@
     <title th:text="#{title.msg}"> Offline primer evaluator </title>
 </head>
 <body>
+<h1 th:text="#{welcome.msg}">Welcome to the primer evaluator. The server is currently offline.</h1>
+<div>
+    <p th:text="#{properties.msg}">This tool evaluates any given primer on the following properties: </p>
+    <br>
+    <ul>
+        <li> <p th:text="#{prop1.msg}">Only containing A, C, T and G nucleotides</p> </li>
+        <li> <p th:text="#{prop2.msg}">The length of the primer</p> </li>
+        <li> <p th:text="#{prop3.msg}">GC%</p> </li>
+        <li> <p th:text="#{prop4.msg}">Melting temperature in Celsius</p> </li>
+        <li> <p th:text="#{prop5.msg}">Homopolymer length</p> </li>
+        <li> <p th:text="#{prop6.msg}">Intramolecular binding length</p> </li>
+        <li> <p th:text="#{prop7.msg}">In case of two primers: intermolecular binding length</p> </li>
 
-<p th:text="#{welcome.msg}">Welcome to the primer evaluator. The server is currently offline.</p>
-
+    </ul>
+<br>
+</div>
+<br>
+<div>
 <p th:text="#{fileupload.msg}">Upload your file containing primers here</p>
 <form action="file_upload.do" method="GET" enctype="multipart/form-data">
     <input type="file" name="sequence_file" accept="text", required>
@@ -15,6 +30,9 @@
     <br>
     <input type="submit" value="Evaluate" />
 </form>
+</div>
+<br>
+<div>
 <p th:text="#{manually.msg}">Or enter your primers here:</p>
 
 <form action="manual_upload.do" method="GET">
@@ -28,6 +46,6 @@
     <br><br>
     <input type="submit" value="Evaluate" />
 </form>
-
+</div>
 </body>
 </html>

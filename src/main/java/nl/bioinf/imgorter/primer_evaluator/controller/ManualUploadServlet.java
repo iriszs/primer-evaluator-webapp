@@ -29,9 +29,13 @@ public class ManualUploadServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String primer_a_seq = "5'-" + request.getParameter("primer_a") + "-3'";
-        String primer_b_seq = "3'-" + request.getParameter("primer_b") + "-5'";
+        // a second primer is not required
+        if (request.getParameter("primer_b") != "") {
+            String primer_b_seq = "3'-" + request.getParameter("primer_b") + "-5'";
+            System.out.println(primer_b_seq);
+
+        }
         System.out.println(primer_a_seq);
-        System.out.println(primer_b_seq);
         Locale locale = request.getLocale();
 
         WebContext ctx = new WebContext(request, response, request.getServletContext(), locale);
