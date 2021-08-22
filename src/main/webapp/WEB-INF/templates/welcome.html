@@ -25,24 +25,47 @@
 <br>
 <div>
 <p th:text="#{fileupload.msg}">Upload your file containing primers here</p>
-<form action="file_upload.do" method="GET" enctype="multipart/form-data">
-    <input type="file" name="sequence_file" accept="text", required>
+<form id="file_upload.do">
+    <input id= "fileName" type="file" name="sequence_file" accept="text", required>
     <br>
     <br>
-    <input type="submit" value="Evaluate" />
 </form>
+    <button id="fileSubmitBtn">Upload and evaluate</button>
 </div>
+
+<script>
+    document.getElementById("fileSubmitBtn").addEventListener("click", _e => {
+        let fileName = document.getElementById('fileName').value
+
+        let manualSubmitReq = $.ajax({
+            url: "/file_upload.do?fileName=" + encodeURIComponent("C%3A%2F") + fileName,
+            method: 'GET',
+        })
+
+        manualSubmitReq.then((e, _, xhr) => {
+            switch(xhr.status) {
+                case 400:
+                case 500:
+                    alert(e)
+                    return
+                case 200:
+                    window.sessionStorage.setItem('results', e)
+                    window.location.href = 'results'
+            }
+        })
+    })
+</script>
 <br>
 <div>
 <p th:text="#{manually.msg}">Or enter your primers here:</p>
 
 <form id="manualInputForm">
     <label for="primer_a"> Forward primer: 5-'</label>
-    <input type="text" id="primer_a" name="primer_a" minlength="18" maxlength="30" pattern= "^[ATCGatcg]*$" placeholder= "ACTGACTGACTGACTGAT" title="Please enter a primer sequence only containing nucleotides and between 18-30 nucleotides long" required>
+    <input type="text" id="primer_a" name="primer_a" minlength="18" maxlength="22" pattern= "^[ATCGatcg]*$" placeholder= "ACTGACTGACTGACTGAT" title="Please enter a primer sequence only containing nucleotides and between 18-22 nucleotides long" required>
     -3'
     <br><br>
     <label for="primer_b">Reverse primer (optional): 3'-</label>
-    <input type="text" id="primer_b" name="primer_b" minlenght="18" maxlength="30" placeholder="TAGTCAGTCAGTCAGTCA" title="Please enter a primer sequence only containing nucleotides and between 18-30 nucleotides long" >
+    <input type="text" id="primer_b" name="primer_b" minlenght="18" maxlength="22" pattern= "^[ATCGatcg]*$" placeholder="TAGTCAGTCAGTCAGTCA" title="Please enter a primer sequence only containing nucleotides and between 18-22 nucleotides long" >
     -5'
     <br><br>
 </form>

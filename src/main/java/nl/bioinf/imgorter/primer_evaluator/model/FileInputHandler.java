@@ -59,9 +59,4 @@ public class FileInputHandler {
         return inputText;
     }
 
-    public void printInput(){
-        System.out.println("Executing Inputhandler.printInput");
-        System.out.println("File location is " + inputfile);
-
-    }
 }

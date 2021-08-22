@@ -1,7 +1,8 @@
 package nl.bioinf.imgorter.primer_evaluator.controller;
 
 import nl.bioinf.imgorter.primer_evaluator.config.WebConfig;
-import nl.bioinf.imgorter.primer_evaluator.model.Evaluator;
+import nl.bioinf.imgorter.primer_evaluator.model.*;
+import nl.bioinf.imgorter.primer_evaluator.model.gson.ManualUploadResponse;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -28,11 +29,19 @@ public class FileUploadServlet extends HttpServlet{
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String sequenceFile = request.getParameter("sequence_file");
-        Locale locale = request.getLocale();
-        WebContext ctx = new WebContext(request, response, request.getServletContext(), locale);
-        if (sequenceFile != null) {
-            ctx.setVariable("sequenceFile", sequenceFile);
+        try{
+            String sequenceFile = request.getParameter("sequence_file");
+            FileInputHandler fh = new FileInputHandler(sequenceFile);
+            InputValidator IV = new InputValidator();
+            String fileSequences = fh.readFile();
+            System.out.println(fileSequences);
+            IV.isValid(fileSequences);
+
+
+
+        }
+        catch(Exception e) {
+            e.printStackTrace();
         }
     }
 }

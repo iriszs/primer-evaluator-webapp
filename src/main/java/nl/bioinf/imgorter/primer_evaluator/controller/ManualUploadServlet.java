@@ -33,7 +33,6 @@ public class ManualUploadServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Locale locale = request.getLocale();
 
         try {
             String primerASeq = "5'-" + request.getParameter("a") + "-3'";
@@ -47,7 +46,6 @@ public class ManualUploadServlet extends HttpServlet {
             // a second primer is not required
             String bValue = request.getParameter("b");
             if (bValue != null && !bValue.isEmpty()) {
-                System.out.println(" hier zouden we niet moeten zijn");
 
                 String primerBSeq = "3'-" + bValue + "-5'";
                 Primer primerB = new Primer(primerBSeq);
