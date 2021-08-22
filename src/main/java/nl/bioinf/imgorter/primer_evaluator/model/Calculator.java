@@ -1,6 +1,7 @@
 package nl.bioinf.imgorter.primer_evaluator.model;
 
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Calculator {
 
@@ -11,8 +12,6 @@ public class Calculator {
      * @return Returns a HashMap where the key is the counted nucleotide and the value the occurrence count
      */
     public HashMap<Nucleotide, Integer> CountNucleotides(Nucleotide[] nucleotides){
-        System.out.println("In the calculate nucleotides");
-        System.out.println(nucleotides);
         HashMap<Nucleotide, Integer> nucCount = new HashMap ();
 
         int countA = 0;
@@ -48,7 +47,6 @@ public class Calculator {
      */
 
     public double calculateGC(HashMap<Nucleotide, Integer> nucCount){
-        System.out.println("basecount map" + nucCount);
 
         double GCPercentage;
         int countA = nucCount.get(Nucleotide.A);
@@ -62,8 +60,6 @@ public class Calculator {
         System.out.println("Count of G bases: " + countG);
 
         GCPercentage = (double) (countG + countC) / (countA + countC + countG + countT) * 100;
-
-        System.out.println("GCpercentage calculated in the calculator = " + GCPercentage);
 
         return GCPercentage;
     }
@@ -85,19 +81,17 @@ public class Calculator {
         int countG = nucCount.get(Nucleotide.G);
 
         meltingTemp = (int) (4* (countG + countC)) + (2* (countA + countT));
-        System.out.println("melting temp in the function = " + meltingTemp);
 
         return meltingTemp;
     }
 
     /**
-     * Calculates the maximum homopolymer lenght (longest sequence of continuous nucleotides)
+     * Calculates the maximum homopolymer length (longest sequence of continuous nucleotides) for every nucleotide
      * For the input "AAACCCGGGTTTTAAAA", A = 4, C = 3, G = 3, T = 4
      *
      * @param nucleotides The individual nucleotide map (base sequence without 5'- and 3-') to calculate from
      * @return Returns HashMap where the key is the counted nucleotide and the value is the continuous occurrence count
      * Returns a HashMap instead of integer to have more information stored to request later
-     * The Evaluator class will return the nucleotide with the highest value.
      */
     public HashMap<Nucleotide, Integer> calculateMaxHomopolymerLength(Nucleotide[] nucleotides) {
         final HashMap<Nucleotide, Integer> homopolymerLenghts = new HashMap<>();
@@ -166,14 +160,11 @@ public class Calculator {
                 break;
         }
 
-        //System.out.println("a Counter = " + aCounter);
-        //System.out.println("c Counter = " + cCounter);
-        //System.out.println("g Counter = " + gCounter);
-        //System.out.println("t Counter = " + tCounter);
-
         return homopolymerLenghts;
     }
 
+    // Function to fill up the maximum homopolymer length map.
+    // To iterate and only add a new count when it's larger than the previous count
     private void insertIfLarger(final HashMap<Nucleotide, Integer> polymerMap, Nucleotide nuc, int nucCount) {
         Integer currentCount = polymerMap.get(nuc);
         if(currentCount == null) {
@@ -184,6 +175,33 @@ public class Calculator {
         if(nucCount > currentCount) {
             polymerMap.put(nuc, nucCount);
         }
+    }
+
+    /**
+     * Determines the longest homopolymer length out of the function calculateMaxHomopolymerLength
+     *
+     * @param nucs The individual nucleotide map
+     * @return Returns a Pair (Hashmap with only one entry, one key and value; a 'pair') that contains the longest
+     * homopolymer length and the corresponding nucleotide
+     */
+    public Pair<Nucleotide, Integer> getLongestMaxHomopolymerLength(Nucleotide[] nucs) {
+        HashMap<Nucleotide, Integer> maxHomopolyLength = calculateMaxHomopolymerLength(nucs);
+        LinkedHashMap<Nucleotide, Integer> sorted = sortByValue(maxHomopolyLength, false);
+        Map.Entry<Nucleotide, Integer> highest = sorted.entrySet().iterator().next();
+        return new Pair<>(highest.getKey(), highest.getValue());
+    }
+
+    // Function to sort the MaxHomopolymerLength hashmap from highest value to lowest
+    private static <T extends Comparable<? super T>> LinkedHashMap<T, Integer> sortByValue(Map<T, Integer> unsortMap, final boolean order) {
+        List<Map.Entry<T, Integer>> list = new LinkedList<>(unsortMap.entrySet());
+
+        // Sorting the list based on values
+        list.sort((o1, o2) -> order ? o1.getValue().compareTo(o2.getValue()) == 0
+                ? o1.getKey().compareTo(o2.getKey())
+                : o1.getValue().compareTo(o2.getValue()) : o2.getValue().compareTo(o1.getValue()) == 0
+                ? o2.getKey().compareTo(o1.getKey())
+                : o2.getValue().compareTo(o1.getValue()));
+        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
     }
 
     /**

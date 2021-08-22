@@ -1,24 +1,28 @@
 package nl.bioinf.imgorter.primer_evaluator.model;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Primer {
     private final String sequence;
     private Nucleotide[] nucleotides;
     private boolean isForward;
     private String baseSequence;
-    private HashMap<Nucleotide, Integer> baseCount;
+    private HashMap<Nucleotide, Integer> nucCount;
     private double gcPercentage;
     private int meltingTemp;
-    private HashMap <Nucleotide, Integer> maxHomopolymerLength;
+    private HashMap <Nucleotide, Integer> maxHomopolymerLengths;
     private int interIdentity;
     private int intraIdentity;
+    private HashMap<String, String> evaluatedResults;
 
     /**
      * Create a new Primer object
      * @param sequence The sequence String of the primer
      */
     public Primer(String sequence){
+
         this.sequence = sequence;
         this.isForward = sequence.startsWith("5'-");
         if(isForward) {
@@ -75,21 +79,16 @@ public class Primer {
         return new Primer(complementSeq);
     }
 
-    /**
-     public void setBaseSequence(String baseSequence){
-     this.baseSequence = baseSequence;
-     }
-     */
     public String getBaseSequence(){
         return this.baseSequence;
     }
 
     public void setNucleotideCount(HashMap<Nucleotide, Integer> baseCount){
-        this.baseCount = baseCount;
+        this.nucCount = baseCount;
     }
 
     public HashMap<Nucleotide, Integer> getNucleotideCount() {
-        return baseCount;
+        return nucCount;
     }
 
     public void setGcPercentage(double gcPercentage) {
@@ -111,13 +110,29 @@ public class Primer {
     }
 
     public void setHomopolymerLength(HashMap <Nucleotide, Integer> maxHomopolymerLength){
-        this.maxHomopolymerLength = maxHomopolymerLength;
+        this.maxHomopolymerLengths = maxHomopolymerLength;
 
     }
 
+    public HashMap<Nucleotide, Integer> getHomopolymerMap() {
+        System.out.println("Map with all homopolymer lenghts of all nucleotides" + maxHomopolymerLengths);
+
+        return maxHomopolymerLengths;
+    }
+
+
+
     public HashMap<Nucleotide, Integer> getMaxHomopolymerLength() {
-        System.out.println("The map with maximum homopolymer lenght is " + maxHomopolymerLength);
-        return maxHomopolymerLength;
+        HashMap<Nucleotide, Integer> maxHomopolymer = new HashMap<Nucleotide, Integer>();
+        int maxValueInMap=(Collections.max(maxHomopolymerLengths.values()));
+        for (Map.Entry<Nucleotide, Integer> entry : maxHomopolymerLengths.entrySet()) {
+            if (entry.getValue()==maxValueInMap) {
+                maxHomopolymer.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        //System.out.println("Map with the highest including corresponding nucleotide" + maxHomopolymer);
+        return maxHomopolymer;
     }
 
     public void setInterIdentity(int interIdentity){
@@ -138,5 +153,13 @@ public class Primer {
         return intraIdentity;
     }
 
+    public void setEvaluatedResults(HashMap <String, String> evaluatedResults){
+        this.evaluatedResults = evaluatedResults;
+    }
+
+    public HashMap<String, String> getEvaluatedResults(){
+        System.out.println("The evaluated results of this primer are: " + evaluatedResults);
+        return evaluatedResults;
+    }
 
 }

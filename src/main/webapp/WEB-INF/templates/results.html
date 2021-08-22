@@ -7,25 +7,62 @@
 </head>
 <body>
 
-<p th:text="#{primerA.msg}">Result from primer A: </p>
-<p th:text="#{nucleotides.msg}">Nucleotide content: </p>
-<p th:text="#{length.msg}">Sequence length: </p>
-<p th:text="#{GC.msg}">GC percentage: </p>
-<p th:text="#{melttemp.msg}">The melting temperature in Celsius: </p>
-<p th:text="#{homopolymer.msg}">The homopolymer length: </p>
-<p th:text="#{intramolecular.msg}">Intramolecular length: </p>
+<p th:text="#{primerA.msg}">Result from primer A with sequence: </p>
+<p id="nucContentA" th:text="#{nucleotides.msg}">Nucleotide content: </p>
+<p id="seqLenA" th:text="#{length.msg}">Sequence length: </p>
+<p id="gcPercA" th:text="#{GC.msg}">GC percentage: </p>
+<p id="meltingTempA" th:text="#{melttemp.msg}">The melting temperature in Celsius: </p>
+<p id="homoPolyLenA" th:text="#{homopolymer.msg}">The homopolymer length: </p>
+<p id="intraMol" th:text="#{intramolecular.msg}">Intramolecular length: </p>
 <br>
 <br>
 <p th:text="#{primerB.msg}">Result from primer B: </p>
-<p th:text="#{nucleotides.msg}">Nucleotide content: </p>
-<p th:text="#{length.msg}">Sequence length: </p>
-<p th:text="#{GC.msg}">GC percentage: </p>
-<p th:text="#{melttemp.msg}">The melting temperature in Celsius: </p>
-<p th:text="#{homopolymer.msg}">The homopolymer length: </p>
-<p th:text="#{intramolecular.msg}">Intramolecular length: </p>
+<p id="nucContentB" th:text="#{nucleotides.msg}">Nucleotide content: </p>
+<p id="seqLenB" th:text="#{length.msg}">Sequence length: </p>
+<p id="gcPercB" th:text="#{GC.msg}">GC percentage: </p>
+<p id="meltingTempB" th:text="#{melttemp.msg}">The melting temperature in Celsius: </p>
+<p id="homoPolyLenB" th:text="#{homopolymer.msg}">The homopolymer length: </p>
+<p id="intraMolB" th:text="#{intramolecular.msg}">Intramolecular length: </p>
 <br>
 <br>
-<p th:text="#{intermolecular.msg}">Intermolecular length when using both Primer A and B: </p>
+<p id="interMol" th:text="#{intermolecular.msg}">Intermolecular length when using both Primer A and B: </p>
+<script>
+    let results = JSON.parse(window.sessionStorage.getItem('results'));
+    toHtml(results.a, "A");
+    if(results.b != null) {
+        toHtml(results.b, "B");
+    }
 
+    function toHtml(arr, primerName) {
+        arr.forEach(result => {
+            let msg = "";
+            if(result.isPass.value != null) {
+                if(result.isPass.value) {
+                    msg = result.isPass.value
+                } else {
+                    msg = result.isPass.value + " Reason: " + result.reason.value
+                }
+            } else {
+                msg = result.value.value
+            }
+
+            switch(result.type) {
+                case 'GC_PER':
+                    document.getElementById('gcPerc' + primerName).innerHTML += msg
+                    break;
+                case 'MELTING_TEMP':
+                    document.getElementById('meltingTemp' + primerName).innerHTML += msg
+                    break;
+                case 'HOMO_POLY_LEN':
+                    document.getElementById('homoPolyLen' + primerName).innerHTML += msg
+                    break;
+                case 'INTRA_IDENT':
+                    document.getElementById('intraMol' + primerName).innerHTML += msg
+                    break;
+            }
+        })
+    }
+
+</script>
 </body>
 </html>

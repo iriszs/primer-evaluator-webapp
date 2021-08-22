@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title th:text="#{title.msg}"> Offline primer evaluator </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 <h1 th:text="#{welcome.msg}">Welcome to the primer evaluator. The server is currently offline.</h1>
@@ -35,17 +36,40 @@
 <div>
 <p th:text="#{manually.msg}">Or enter your primers here:</p>
 
-<form action="manual_upload.do" method="GET">
+<form id="manualInputForm">
     <label for="primer_a"> Forward primer: 5-'</label>
-    <input type="text" id="primer_a" name="primer_a" minlength="18" maxlength="30" placeholder="ACTGACTGACTGACTGAT" title="Please enter a primer sequence only containing nucleotides and between 18-30 nucleotides long" required>
+    <input type="text" id="primer_a" name="primer_a" minlength="18" maxlength="30" pattern= "^[ATCGatcg]*$" placeholder= "ACTGACTGACTGACTGAT" title="Please enter a primer sequence only containing nucleotides and between 18-30 nucleotides long" required>
     -3'
     <br><br>
     <label for="primer_b">Reverse primer (optional): 3'-</label>
     <input type="text" id="primer_b" name="primer_b" minlenght="18" maxlength="30" placeholder="TAGTCAGTCAGTCAGTCA" title="Please enter a primer sequence only containing nucleotides and between 18-30 nucleotides long" >
     -5'
     <br><br>
-    <input type="submit" value="Evaluate" />
 </form>
+    <button id="manualSubmitBtn">Evaluate</button>
 </div>
+<script>
+    document.getElementById("manualSubmitBtn").addEventListener("click", _e => {
+        let a = document.getElementById('primer_a').value
+        let b = document.getElementById('primer_b').value
+
+        let manualSubmitReq = $.ajax({
+            url: "/manual_upload.do?a=" + a + "&b=" + b,
+            method: 'GET',
+        })
+
+        manualSubmitReq.then((e, _, xhr) => {
+            switch(xhr.status) {
+                case 400:
+                case 500:
+                    alert(e)
+                    return
+                case 200:
+                    window.sessionStorage.setItem('results', e)
+                    window.location.href = 'results'
+            }
+        })
+    })
+</script>
 </body>
 </html>
