@@ -22,40 +22,17 @@
     </ul>
 <br>
 </div>
-<br>
-<div>
 <p th:text="#{fileupload.msg}">Upload your file containing primers here</p>
-<form id="file_upload.do">
-    <input id= "fileName" type="file" name="sequence_file" accept="text", required>
-    <br>
-    <br>
+
+<form action="data_upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="sequence_file" accept="text">
+    <input type="submit" value="Upload" />
 </form>
-    <button id="fileSubmitBtn">Upload and evaluate</button>
+
+
 </div>
 
-<script>
-    document.getElementById("fileSubmitBtn").addEventListener("click", _e => {
-        let fileName = document.getElementById('fileName').value
 
-        let manualSubmitReq = $.ajax({
-            url: "/file_upload.do?fileName=" + encodeURIComponent("C%3A%2F") + fileName,
-            method: 'GET',
-        })
-
-        manualSubmitReq.then((e, _, xhr) => {
-            switch(xhr.status) {
-                case 400:
-                case 500:
-                    alert(e)
-                    return
-                case 200:
-                    window.sessionStorage.setItem('results', e)
-                    window.location.href = 'results'
-            }
-        })
-    })
-</script>
-<br>
 <div>
 <p th:text="#{manually.msg}">Or enter your primers here:</p>
 

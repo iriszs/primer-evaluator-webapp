@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//TODO CHECK IF FILE DOES NOT CONTAIN MORE THAN TWO LINES
+
 public class FileInputHandler {
 
     private final String inputfile;
@@ -21,10 +23,11 @@ public class FileInputHandler {
      *
      * @return Returns a String containing the text in the file
      */
-    public String readFile() throws FileNotFoundException {
+    public StringBuilder readFile() throws FileNotFoundException {
         FileReader fr = null;
         BufferedReader br = null;
-        String inputText = null;
+        StringBuilder inputText = new StringBuilder();
+        //String inputText = null;
 
 
         try {
@@ -33,8 +36,7 @@ public class FileInputHandler {
             String currentLine;
 
             while ((currentLine = br.readLine()) != null) {
-                System.out.println(currentLine);
-                inputText = currentLine;
+                inputText.append(currentLine + System.getProperty("line.separator"));
 
             }
 
