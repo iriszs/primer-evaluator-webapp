@@ -2,7 +2,7 @@
 Final assignment of Java 1 and Webbased systems 1
 
 This is the front end with an incorporated back end of the final assignment of Java 1 and Webbased 1 of imgorter.
-The development of the back-end was recorded in this github: https://github.com/iriszs/primer-evaluator
+The development of the back-end was recorded in this github: https://github.com/iriszs/primer-evaluator (recommended to watch those commits to see the progress of development)
 
 This is the primer evaluator.
 The primer evaluator accepts 1 or 2 primers in the form of a manual upload or file upload.
