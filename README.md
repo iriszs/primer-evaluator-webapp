@@ -22,4 +22,4 @@ To run this yourself:
 3. Add TomCat as your localhost server
 4. Add the four following environmental variables: DB_DATABASE, DB_HOST, DB_USERNAME and DB_PASSWORD
 5. Change the file locations in FileUploadServlet.java on line 24 and 31 to existing locations on your pc
-6. Run with TomCat as your localhost server
+6. Run with TomCat as your localhost server and the corresponding environmental variables
