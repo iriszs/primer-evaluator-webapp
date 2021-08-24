@@ -11,36 +11,40 @@ public class InputValidator {
      * - End with -5' or -3'
      * - Must end with -3' if starts with 5'-
      * - Must end with -5' if starts with 3'-
-     * - Must contain valid nucleotides only (ACTG/actg)
      * @param inputSequence
      * @return True if the sequence is valid, false if it is not (if one of the points fail)
      */
-    public static boolean isValid(String inputSequence) {
-        // First check
-        // Must start with 5'- or 3'-
-        if(!(inputSequence.startsWith("5'-") || inputSequence.startsWith("3'-"))) {
+    public static boolean checkValidSequence(String inputSequence) {
+        String trimmedSeq = inputSequence.trim();
+        if(!(trimmedSeq.startsWith("3'-") || trimmedSeq.startsWith("5'-"))) {
+            System.out.println("first check false");
+            return false;
+        }
+        if(!(trimmedSeq.endsWith("-3'") || trimmedSeq.endsWith("-5'"))){
+            System.out.println("second check false");
+            return false;
+        }
+        if(trimmedSeq.startsWith("-3'") && trimmedSeq.endsWith("-3'")){
+            System.out.println("third check false");
+            return false;
+        }
+        if(trimmedSeq.startsWith("-5'") && trimmedSeq.endsWith("-5'")){
+            System.out.println("fourth check false");
             return false;
         }
 
-        // Second check
-        // Must end with -3' or -5'
-        if(!(inputSequence.endsWith("-3'") || inputSequence.endsWith("-5'"))) {
-            return false;
-        }
+        System.out.println("passed!!!!");
+        return true;
+    }
 
-        // Third check
-        // If sequence starts with 5'-, it must end with -3'
-        if(inputSequence.startsWith("5'-") && !inputSequence.endsWith("-3'")) {
-            return false;
-        }
 
-        // Fourth check
-        // If sequence starts with 3'-, it must end with -5'
-        if(inputSequence.startsWith("3'-") && !inputSequence.endsWith("-5'")) {
-            return false;
-        }
-
-        String baseSeq = inputSequence.split("-")[1];
+    /**
+     * Checks if the entered text contains all valid nucleotides.
+     * -> Must contain valid nucleotides only (ACTG/actg)
+     * @param baseSeq
+     * @return True if all nucleotides are valid, false if it is not
+     */
+    public static boolean checkValidNucleotides(String baseSeq) {
 
         // Fifth check
         // Sequence can only contain nucleotides in uppercase or lowercase (ACTG/actg)
@@ -50,6 +54,19 @@ public class InputValidator {
             return false;
         }
 
+        return true;
+    }
+
+    /**
+     * Checks if the entered text contains all valid nucleotides.
+     * -> Must contain valid nucleotides only (ACTG/actg)
+     * @param baseSequence
+     * @return True if all nucleotides are valid, false if it is not
+     */
+    public static boolean checkValidLength (String baseSequence) {
+        if ((baseSequence.length() < 18) || (baseSequence.length() > 22) ){
+            return false;
+        }
         return true;
     }
 }

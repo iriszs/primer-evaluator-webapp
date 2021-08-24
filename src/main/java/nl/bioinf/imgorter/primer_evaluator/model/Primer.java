@@ -11,6 +11,7 @@ public class Primer {
     private String baseSequence;
     private boolean validLength;
     private boolean validNucs;
+    private boolean validSequence;
     private HashMap<Nucleotide, Integer> nucCount;
     private double gcPercentage;
     private int meltingTemp;
@@ -90,7 +91,7 @@ public class Primer {
 
     }
 
-    public Boolean getValidLength(){
+    public Boolean getIsValidLength(){
         return validLength;
     }
 
@@ -98,8 +99,16 @@ public class Primer {
         this.validNucs = validNucs;
     }
 
-    public Boolean getValidNucs(){
+    public Boolean getIsValidNucs(){
         return validNucs;
+    }
+
+    public void setValidSequence(boolean validSequence){
+        this.validSequence = validSequence;
+    }
+
+    public Boolean getIsValidSequence(){
+        return validSequence;
     }
 
     public void setNucleotideCount(HashMap<Nucleotide, Integer> baseCount){

@@ -7,5 +7,4 @@ public enum ResultType {
     INTRA_IDENT,
     INTER_IDENT,
     SEQUENCE_CONTENT,
-    SEQUENCE_LEN
 }

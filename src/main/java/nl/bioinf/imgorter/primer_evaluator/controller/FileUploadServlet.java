@@ -1,9 +1,10 @@
 package nl.bioinf.imgorter.primer_evaluator.controller;
 
-import jdk.internal.util.xml.impl.Input;
+import com.google.gson.Gson;
 import nl.bioinf.imgorter.primer_evaluator.config.WebConfig;
-import nl.bioinf.imgorter.primer_evaluator.model.FileInputHandler;
-import nl.bioinf.imgorter.primer_evaluator.model.InputValidator;
+import nl.bioinf.imgorter.primer_evaluator.model.*;
+import nl.bioinf.imgorter.primer_evaluator.model.gson.FileUploadResponse;
+import nl.bioinf.imgorter.primer_evaluator.model.gson.ManualUploadResponse;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -32,6 +33,8 @@ public class FileUploadServlet extends HttpServlet {
 
     private TemplateEngine templateEngine;
     private String uploadDir;
+    private static final Gson GSON = new Gson();
+
 
     @Override
     public void init() throws ServletException {
@@ -67,31 +70,59 @@ public class FileUploadServlet extends HttpServlet {
 
         String[] sequences = inputText.toString().split("\n");
 
-        String primerA = "";
-        String primerB = "";
+        String primerASeq = "";
+        String primerBSeq = "";
 
-        primerA = sequences[0];
+        primerASeq = sequences[0];
         try{
-            primerB = sequences[1];
+            primerBSeq = sequences[1];
         }
         catch (IndexOutOfBoundsException IOBexception){
             System.out.println("no second primer");
         }
 
-        System.out.println(primerA);
-        System.out.println(primerB);
+        System.out.println(primerASeq);
+        System.out.println(primerBSeq);
 
-        //dan de test logica voor primerA
-        InputValidator IV = new InputValidator();
-        InputValidator.isValid(primerA);
-        if(primerB != ""){
+        PrimerEvaluator evaluator = new PrimerEvaluator();
+
+
+        Primer primerA = new Primer(primerASeq);
+        // Check input validity before calculating
+        System.out.println("getsequence of primer A used: " + primerA.getSequence());
+        primerA.setValidSequence(InputValidator.checkValidSequence(primerA.getSequence()));
+        //System.out.println(primerA.getValidSequence());
+        primerA.setValidNucs(InputValidator.checkValidNucleotides(primerA.getBaseSequence()));
+        //System.out.println(primerA.getValidNucs());
+        primerA.setValidLength(InputValidator.checkValidLength(primerA.getBaseSequence()));
+        //System.out.println(primerA.getValidLength());
+
+        // Evaluator checks if one of the above validity checks returns false
+        // If false, the rest will not be returned.
+        PrimerResult[] resultsA = evaluator.evaluateOne(primerA);
+        PrimerResult[] resultsB = null;
+
+
+
+        if(primerBSeq != ""){
             System.out.println("primer B exists");
-            InputValidator.isValid(primerB);
+            Primer primerB = new Primer(primerBSeq);
+            System.out.println("getsequence of primer B used: " + primerB.getSequence());
+            InputValidator.checkValidSequence(primerB.getSequence());
+            InputValidator.checkValidNucleotides(primerB.getBaseSequence());
+            InputValidator.checkValidLength(primerB.getBaseSequence());
+            Pair<PrimerResult[], PrimerResult[]> results = evaluator.evaluateTwo(primerA, primerB);
         }
 
+        FileUploadResponse r = new FileUploadResponse(resultsA, resultsB);
 
+        String rJson = GSON.toJson(r);
 
-        // if primerB != "" dan de test logica voor primerB
+        System.out.println(rJson);
+
+        response.getWriter().write(rJson);
+        response.getWriter().flush();
+        response.setHeader("Content-Type", "application/json");
 
 
         WebContext ctx = new WebContext(request, response, request.getServletContext(), request.getLocale());
