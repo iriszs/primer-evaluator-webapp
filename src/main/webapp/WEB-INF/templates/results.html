@@ -4,28 +4,46 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title th:text="#{title.msg}"> Offline result </title>
+    <link rel="stylesheet" th:href="@{/css/results.css}" href="../../css/results.css">
 </head>
 <body>
 
-<p th:text="#{primerA.msg}">Result from primer A with sequence: </p>
-<p id="nucContentA" th:text="#{nucleotides.msg}">Nucleotide content: </p>
-<p id="seqLenA" th:text="#{length.msg}">Sequence length: </p>
-<p id="gcPercA" th:text="#{GC.msg}">GC percentage: </p>
-<p id="meltingTempA" th:text="#{melttemp.msg}">The melting temperature in Celsius: </p>
-<p id="homoPolyLenA" th:text="#{homopolymer.msg}">The homopolymer length: </p>
-<p id="intraMol" th:text="#{intramolecular.msg}">Intramolecular length: </p>
+<h1 class="resultHead" th:text="#{resultMain.msg}">Properties calculated. See the results below.</h1>
+
+<p class="primerA" th:text="#{primerA.msg}">Result from primer A: </p>
+<p class="resultA" id="seqContentA" th:text="#{sequence.msg}">Sequence validity: </p>
+<p class="resultA" id="gcPercA" th:text="#{GC.msg}">GC percentage: </p>
+<p class="resultA" id="meltingTempA" th:text="#{melttemp.msg}">The melting temperature in Celsius: </p>
+<p class="resultA" id="homoPolyLenA" th:text="#{homopolymer.msg}">The homopolymer length: </p>
+<p class="resultA" id="intraMolA" th:text="#{intramolecular.msg}">Intramolecular length: </p>
+
+<p class="primerB" th:text="#{primerB.msg}">Result from primer B: </p>
+<p class="resultB" id="seqContentB" th:text="#{sequence.msg}">Sequence validity: </p>
+<p class="resultB" id="gcPercB" th:text="#{GC.msg}">GC percentage: </p>
+<p class="resultB" id="meltingTempB" th:text="#{melttemp.msg}">The melting temperature in Celsius: </p>
+<p class="resultB" id="homoPolyLenB" th:text="#{homopolymer.msg}">The homopolymer length: </p>
+<p class="resultB" id="intraMolB" th:text="#{intramolecular.msg}">Intramolecular length: </p>
 <br>
 <br>
-<p th:text="#{primerB.msg}">Result from primer B: </p>
-<p id="nucContentB" th:text="#{nucleotides.msg}">Nucleotide content: </p>
-<p id="seqLenB" th:text="#{length.msg}">Sequence length: </p>
-<p id="gcPercB" th:text="#{GC.msg}">GC percentage: </p>
-<p id="meltingTempB" th:text="#{melttemp.msg}">The melting temperature in Celsius: </p>
-<p id="homoPolyLenB" th:text="#{homopolymer.msg}">The homopolymer length: </p>
-<p id="intraMolB" th:text="#{intramolecular.msg}">Intramolecular length: </p>
+<p class="resultB" id="interMol" th:text="#{intermolecular.msg}">Intermolecular length when using both Primer A and B: </p>
 <br>
-<br>
-<p id="interMol" th:text="#{intermolecular.msg}">Intermolecular length when using both Primer A and B: </p>
+<p class="headInterpertation" th:text="#{interTitle.msg}">How to intrepret te results:</p>
+<p class="interpertation" th:text="#{interpertation.msg}">
+    A property that has passed will show 'true'. A property that has failed to meet the requirements will show 'false'
+    The sequence content passes when it contains valid nucleotides (ACTG), the presence of 5'- and -3' (or 3'- and -5') and a
+    length of 18-22 nucleotides.
+    The GC percentage passes when the percentage is between 50 and 55%.
+    The melting temperature passes when it is between 50-60 degrees Celsius.
+    The maximum homopolymer length passes when it's below 4.
+    The intramolecular and intermolecular identity is to be validated by the user - it only returns the number of
+    nucleotides, since it is dependent on the situation.
+
+</p>
+
+
+
+
+
 <script>
     let results = JSON.parse(window.sessionStorage.getItem('results'));
     toHtml(results.a, "A");
@@ -58,6 +76,12 @@
                     break;
                 case 'INTRA_IDENT':
                     document.getElementById('intraMol' + primerName).innerHTML += msg
+                    break;
+                case 'SEQUENCE_CONTENT':
+                    document.getElementById('seqContent' + primerName).innerHTML +=msg
+                    break;
+                case 'INTER_IDENT':
+                    document.getElementById('interMol').innerHTML+=' ' + msg
                     break;
             }
         })

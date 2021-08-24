@@ -1,13 +1,11 @@
 package nl.bioinf.imgorter.primer_evaluator.model;
 
+import nl.bioinf.imgorter.primer_evaluator.model.annotations.Nullable;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-//TODO CHECK IF FILE DOES NOT CONTAIN MORE THAN TWO LINES
 
 public class FileInputHandler {
 
@@ -22,43 +20,32 @@ public class FileInputHandler {
      * Opens the file, reads the contents and returns the lines.
      *
      * @return Returns a String containing the text in the file
+     * Where every line is on a new line so it can be split later on \n
      */
-    public StringBuilder readFile() throws FileNotFoundException {
-        FileReader fr = null;
-        BufferedReader br = null;
-        StringBuilder inputText = new StringBuilder();
-        //String inputText = null;
-
+    @Nullable
+    public String readFile() {
 
         try {
-            fr = new FileReader(inputfile);
-            br = new BufferedReader(fr);
+            FileReader fr = new FileReader(inputfile);
+            BufferedReader br = new BufferedReader(fr);
             String currentLine;
 
+            StringBuilder inputText = new StringBuilder();
             while ((currentLine = br.readLine()) != null) {
                 inputText.append(currentLine + System.getProperty("line.separator"));
 
             }
 
+            fr.close();
+            br.close();
+
+            return inputText.toString();
         }
         catch (IOException e) {
-
             e.printStackTrace();
-
-        }
-        finally {
-            try {
-                if (br != null){
-                    br.close();
-                    fr.close();
-                }
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
 
-        return inputText;
+        return null;
     }
 
 }

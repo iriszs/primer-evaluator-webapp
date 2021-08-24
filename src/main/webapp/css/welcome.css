@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: lightgray;
+    max-width: 800px;
+    margin: auto;
+}
+head {
+    font-weight: bolder;
+}
+
+h1.welcome{
+    font-family: 'Roboto', sans-serif;
+}
+
+p.propertiesHead{
+    font-family: "Arial Black";
+
+}
+
+ul.propertiesList{
+    font-family: "Arial Black";
+    background-color: darkgrey;
+}
+
+p.fileUpload{
+    font-family: "Arial Black";
+
+}
+
+p.fileExplain{
+    font-family: "Arial Black";
+    font-weight: bolder;
+
+}
+p.primerExample{
+    font-family: "Arial Black";
+
+}
+
+p.manualUpload{
+    font-family: "Arial Black";
+}
+

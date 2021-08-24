@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
+
+
 @WebServlet(name = "WelcomeServlet", urlPatterns = "/welcome", loadOnStartup = 1)
 public class WelcomeServlet extends HttpServlet {
     @Override
@@ -27,7 +28,6 @@ public class WelcomeServlet extends HttpServlet {
     }
     public void process(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        //this step is optional; standard settings also suffice
         WebConfig.configureResponse(response);
         WebContext ctx = new WebContext(
                 request,

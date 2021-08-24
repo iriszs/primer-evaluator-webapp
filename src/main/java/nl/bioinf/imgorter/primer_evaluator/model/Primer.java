@@ -4,6 +4,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This primer class contains all getters and setters of each characteristic that a primer can have
+ */
+
 public class Primer {
     private final String sequence;
     private Nucleotide[] nucleotides;
@@ -28,6 +32,7 @@ public class Primer {
 
         this.sequence = sequence;
         this.isForward = sequence.startsWith("5'-");
+        // if the sequence startswith 5'- it is a forward primer.
         if(isForward) {
             this.baseSequence = sequence.substring(sequence.indexOf('5') + 3, sequence.indexOf('3') -1);
         } else {
@@ -52,6 +57,13 @@ public class Primer {
         return this.nucleotides;
     }
 
+    /**
+     * Gets the reverse of a primer
+     * Primer 5'-ACTG-3' will become 3-'GTCA-5'
+     * @return new Primer object but in reversed sequence
+     *
+     */
+
     public Primer getReverse() {
         final String reversedNucleotideSeq = new StringBuilder(this.baseSequence).reverse().toString();
 
@@ -65,6 +77,13 @@ public class Primer {
         return new Primer(reversedSeq);
     }
 
+    /**
+     * Gets the COMPLEMENT of a primer
+     * Primer 5'-ACTG-3' will become 5-'TGAC-3'
+     * A binds to a T C binds to a G (they are complements)
+     * @return new Primer object but in reversed sequence
+     *
+     */
     public Primer getComplement() {
         final char[] complementSeqChars = new char[this.nucleotides.length];
         for(int i = 0; i < this.nucleotides.length; i++) {
@@ -86,16 +105,15 @@ public class Primer {
         return this.baseSequence;
     }
 
-    public void setValidLength(boolean validLength){
+    public void setIsValidLength(boolean validLength){
         this.validLength = validLength;
-
     }
 
     public Boolean getIsValidLength(){
         return validLength;
     }
 
-    public void setValidNucs(boolean validNucs){
+    public void setIsValidNucs(boolean validNucs){
         this.validNucs = validNucs;
     }
 
@@ -103,7 +121,7 @@ public class Primer {
         return validNucs;
     }
 
-    public void setValidSequence(boolean validSequence){
+    public void setIsValidSequence(boolean validSequence){
         this.validSequence = validSequence;
     }
 
@@ -124,7 +142,6 @@ public class Primer {
     }
 
     public double getGcPercentage(){
-        System.out.println("The GC percentage of this primer is: " + gcPercentage);
         return gcPercentage;
     }
     public void setMeltingTemp(int meltingTemp){
@@ -132,7 +149,6 @@ public class Primer {
     }
 
     public int getMeltingTemp(){
-        System.out.println("The melting temperature of this primer is: " + meltingTemp);
 
         return meltingTemp;
     }
@@ -143,7 +159,6 @@ public class Primer {
     }
 
     public HashMap<Nucleotide, Integer> getHomopolymerMap() {
-        System.out.println("Map with all homopolymer lenghts of all nucleotides" + maxHomopolymerLengths);
 
         return maxHomopolymerLengths;
     }
@@ -159,7 +174,6 @@ public class Primer {
             }
         }
 
-        //System.out.println("Map with the highest including corresponding nucleotide" + maxHomopolymer);
         return maxHomopolymer;
     }
 
@@ -168,7 +182,6 @@ public class Primer {
     }
 
     public int getInterIdentity(){
-        System.out.println("The intermolecular identity of this primer is" + interIdentity);
         return interIdentity;
     }
 
@@ -177,7 +190,6 @@ public class Primer {
     }
 
     public int getIntraIdentity(){
-        System.out.println("The intramolecular identity of this primer is " + intraIdentity);
         return intraIdentity;
     }
 
@@ -186,7 +198,6 @@ public class Primer {
     }
 
     public HashMap<String, String> getEvaluatedResults(){
-        System.out.println("The evaluated results of this primer are: " + evaluatedResults);
         return evaluatedResults;
     }
 

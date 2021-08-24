@@ -17,23 +17,18 @@ public class InputValidator {
     public static boolean checkValidSequence(String inputSequence) {
         String trimmedSeq = inputSequence.trim();
         if(!(trimmedSeq.startsWith("3'-") || trimmedSeq.startsWith("5'-"))) {
-            System.out.println("first check false");
             return false;
         }
         if(!(trimmedSeq.endsWith("-3'") || trimmedSeq.endsWith("-5'"))){
-            System.out.println("second check false");
             return false;
         }
         if(trimmedSeq.startsWith("-3'") && trimmedSeq.endsWith("-3'")){
-            System.out.println("third check false");
             return false;
         }
         if(trimmedSeq.startsWith("-5'") && trimmedSeq.endsWith("-5'")){
-            System.out.println("fourth check false");
             return false;
         }
 
-        System.out.println("passed!!!!");
         return true;
     }
 

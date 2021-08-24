@@ -4,13 +4,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title th:text="#{title.msg}"> Offline primer evaluator </title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" th:href="@{/css/welcome.css}" href="../../css/welcome.css">
 </head>
 <body>
-<h1 th:text="#{welcome.msg}">Welcome to the primer evaluator. The server is currently offline.</h1>
+
+<button id="createSessionBtn">Create Session</button>
+
+<h1 class="welcome" th:text="#{welcome.msg}">Welcome to the primer evaluator. The server is currently offline.</h1>
 <div>
-    <p th:text="#{properties.msg}">This tool evaluates any given primer on the following properties: </p>
-    <br>
-    <ul>
+    <p class="propertiesHead" th:text="#{properties.msg}">This tool evaluates any given primer on the following properties: </p>
+    <ul class="propertiesList">
         <li> <p th:text="#{prop1.msg}">Only containing A, C, T and G nucleotides</p> </li>
         <li> <p th:text="#{prop2.msg}">The length of the primer</p> </li>
         <li> <p th:text="#{prop3.msg}">GC%</p> </li>
@@ -20,28 +23,36 @@
         <li> <p th:text="#{prop7.msg}">In case of two primers: intermolecular binding length</p> </li>
 
     </ul>
+    <h2/>
 <br>
 </div>
-<p th:text="#{fileupload.msg}">Upload your file containing primers here</p>
+<p class="fileUpload" th:text="#{fileupload.msg}">Upload your file containing primers here:</p>
 
 <form action="data_upload" method="post" enctype="multipart/form-data">
     <input type="file" name="sequence_file" accept="text">
-    <input type="submit" value="Upload" />
+    <br>
+    <br>
+    <input id="fileUploadBtn" type="submit" value="Upload and evaluate" />
 </form>
-
-
 </div>
 
+<p class="fileExplain" th:text="#{fileExplain.msg}">Your file must be in .txt and the primers must be in the layout of:
+</p>
+<p class="primerExample"> 5'-ACTGACTGACTGACTGACTG-3'</p>
+<p class="primerExample"> 3'-ACTGACTGACTGACTGACTG-5'</p>
 
+
+<br>
+<br>
 <div>
-<p th:text="#{manually.msg}">Or enter your primers here:</p>
+<p class="manualUpload" th:text="#{manually.msg}">Or enter your primers here:</p>
 
 <form id="manualInputForm">
-    <label for="primer_a"> Forward primer: 5-'</label>
+    <label for="primer_a"> Forward primer (required): 5'-</label>
     <input type="text" id="primer_a" name="primer_a" minlength="18" maxlength="22" pattern= "^[ATCGatcg]*$" placeholder= "ACTGACTGACTGACTGAT" title="Please enter a primer sequence only containing nucleotides and between 18-22 nucleotides long" required>
     -3'
     <br><br>
-    <label for="primer_b">Reverse primer (optional): 3'-</label>
+    <label for="primer_b">Reverse primer (optional) : 3'-</label>
     <input type="text" id="primer_b" name="primer_b" minlenght="18" maxlength="22" pattern= "^[ATCGatcg]*$" placeholder="TAGTCAGTCAGTCAGTCA" title="Please enter a primer sequence only containing nucleotides and between 18-22 nucleotides long" >
     -5'
     <br><br>
@@ -49,9 +60,34 @@
     <button id="manualSubmitBtn">Evaluate</button>
 </div>
 <script>
+    document.getElementById('createSessionBtn').addEventListener("click", _e => {
+        let createSessionReq = $.ajax({
+            url: '/session/create',
+            method: 'POST',
+        });
+
+        createSessionReq.then(e => {
+            let r = JSON.parse(e);
+            window.localStorage.setItem('sessionId', r.sessionId)
+            document.cookie = "sessionid=" + r.sessionId + ";"
+            alert('Session created, your session ID is ' + r.sessionId)
+        })
+
+    })
+
+    document.getElementById('fileUploadBtn').addEventListener('click', _e => {
+        if(window.localStorage.getItem('sessionId') == null) {
+            alert("You first need to create a session!")
+        }
+    })
+
     document.getElementById("manualSubmitBtn").addEventListener("click", _e => {
         let a = document.getElementById('primer_a').value
         let b = document.getElementById('primer_b').value
+
+        if(window.localStorage.getItem('sessionId') == null) {
+            alert("You first need to create a session!")
+        }
 
         let manualSubmitReq = $.ajax({
             url: "/manual_upload.do?a=" + a + "&b=" + b,

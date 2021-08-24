@@ -1,0 +1,16 @@
+<webapp>
+    <servlet>
+        <servlet-name>FileUploadServlet</servlet-name>
+        <servlet-class>nl.bioinf.imgorter.primer_evaluator.controller.FileUploadServlet</servlet-class>
+        <init-param>
+            <param-name>upload_dir</param-name>
+            <param-value>/path/to/file/upload</param-value>
+        </init-param>
+        <multipart-config>
+            <location>C:\Users\Iris\Documents\</location>
+            <max-file-size>20848820</max-file-size>
+            <max-request-size>418018841</max-request-size>
+            <file-size-threshold>1048576</file-size-threshold>
+        </multipart-config>
+    </servlet>
+</webapp>

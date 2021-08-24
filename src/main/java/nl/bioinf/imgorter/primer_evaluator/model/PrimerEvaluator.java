@@ -1,6 +1,8 @@
 package nl.bioinf.imgorter.primer_evaluator.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PrimerEvaluator {
 
@@ -33,6 +35,8 @@ public class PrimerEvaluator {
             return results.toArray(new PrimerResult[0]);
         }
         else{
+            results.add(new PrimerResult(true, ResultType.SEQUENCE_CONTENT));
+
             // Count individual nucleotides and put in a hashmap
             primerA.setNucleotideCount(CAL.CountNucleotides(primerA.getNucleotides()));
             // Calculate GC percentage of primer using the individual nucleotide counts

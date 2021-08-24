@@ -54,11 +54,6 @@ public class Calculator {
         int countT = nucCount.get(Nucleotide.T);
         int countG = nucCount.get(Nucleotide.G);
 
-        System.out.println("Count of A bases: " + countA);
-        System.out.println("Count of C bases: " + countC);
-        System.out.println("Count of T bases: " + countT);
-        System.out.println("Count of G bases: " + countG);
-
         GCPercentage = (double) (countG + countC) / (countA + countC + countG + countT) * 100;
 
         return GCPercentage;

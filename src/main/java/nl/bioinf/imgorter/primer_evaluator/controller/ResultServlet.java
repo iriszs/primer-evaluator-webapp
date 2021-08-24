@@ -9,12 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
+
 @WebServlet(name = "ResultServlet", urlPatterns = "/results", loadOnStartup = 0)
 public class ResultServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
-        System.out.println("Initializing Thymeleaf template engine");
         final ServletContext servletContext = this.getServletContext();
         WebConfig.createTemplateEngine(servletContext);
     }
@@ -27,7 +26,6 @@ public class ResultServlet extends HttpServlet {
     }
     public void process(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        //this step is optional; standard settings also suffice
         WebConfig.configureResponse(response);
         WebContext ctx = new WebContext(
                 request,
